@@ -19,6 +19,7 @@ import {
 } from 'react-native-paper';
 import {useAppDispatch} from '../../hooks/redux';
 import {useAuth} from '../../hooks/useAuth';
+import {navDrawerItem} from '../../utils/data/navigationDrawerIcon';
 
 export const DrawerContent: React.FC<DrawerContentComponentProps> = (
   props,
@@ -27,6 +28,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (
   const {descriptors, navigation, state} = props;
   const {usuario, logOutAccount} = useAuth();
   const dispath = useAppDispatch();
+
   return (
     <DrawerContentScrollView {...props}>
       <View style={styles.drawerContent}>
@@ -74,10 +76,16 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (
                 }
               }}
               icon={({color, size, focused}) => {
-                return <Icon source={'home'} color={color} size={size} />;
+                return (
+                  <Icon
+                    source={navDrawerItem[route.name].icon}
+                    color={color}
+                    size={size}
+                  />
+                );
               }}
               inactiveTintColor={theme.colors.onBackground}
-              label={descriptors[route.key].options.title ?? route.name}
+              label={navDrawerItem[route.name].label}
             />
           ))}
         </Drawer.Section>
@@ -86,7 +94,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (
             <View style={styles.preference}>
               <Text>Tema escuro</Text>
               <View pointerEvents="none">
-                <Switch  value={false} />
+                <Switch value={false} />
               </View>
             </View>
           </TouchableRipple>

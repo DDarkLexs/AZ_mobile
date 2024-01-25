@@ -1,7 +1,7 @@
 // Importações necessárias
 import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-import {Button, Checkbox, Text, TextInput} from 'react-native-paper';
+import {Button, Checkbox, Text, TextInput, useTheme} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import {useAppToast} from '../../hooks/useToast';
 import {useAuthenticateMutation} from '../../store/api/auth';
@@ -17,6 +17,7 @@ const LoginScreen: React.FC = () => {
     useAuthenticateMutation();
   const dispatch = useAppDispatch();
   const toast = useAppToast();
+  const theme = useTheme();
   const handleLogin = async () => {
     try {
       authenticate({
@@ -111,8 +112,9 @@ const LoginScreen: React.FC = () => {
         mode="contained"
         disabled={isLoading}
         loading={isLoading}
-        onPress={handleLogin}
-        style={styles.button}>
+        textColor="white"
+        style={{borderRadius: theme.roundness}}
+        onPress={handleLogin}>
         Entrar
       </Button>
     </View>
@@ -156,6 +158,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
+    
   },
 });
 

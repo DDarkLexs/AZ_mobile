@@ -27,3 +27,12 @@ interface ToastNotificationProps {
   text2: string;
   img: any;
 }
+
+interface ICategoria {
+  categoriaId: number;
+  nome: string;
+  created: Date;
+  updated: Date;
+  entidadeId: number;
+  usuarioId: number;
+}

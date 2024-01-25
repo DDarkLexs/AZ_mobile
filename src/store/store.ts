@@ -7,16 +7,19 @@ import {
   persistReducer,
   persistStore,
 } from '../modules/index';
-import {authApiSlice} from './api/auth';
+import { authApiSlice } from './api/auth';
+import { inventarioApiSlice } from './api/inventario';
 import appSlice from './features/app';
 import authSlice from './features/auth';
+import invatarioSlice from './features/inventario';
 const rootReducer = combineReducers({
   app: appSlice,
   auth: authSlice,
+  inventario: invatarioSlice,
   //   nav: navReducer,
   //   socket: socketReducer,
   [authApiSlice.reducerPath]: authApiSlice.reducer,
-  //   [navApi.reducerPath]: navApi.reducer,
+  [inventarioApiSlice.reducerPath]: inventarioApiSlice.reducer,
 });
 
 const persistConfig = {
@@ -33,7 +36,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       immutableCheck: true,
       serializableCheck: false,
-    }).concat(authApiSlice.middleware),
+    }).concat(authApiSlice.middleware, inventarioApiSlice.middleware),
 });
 
 export const persistor = persistStore(store);
