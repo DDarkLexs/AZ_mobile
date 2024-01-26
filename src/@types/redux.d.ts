@@ -1,6 +1,7 @@
 interface AppState {
   loading: boolean;
   disabled: boolean;
+  inventarioPath: string
 }
 
 interface AuthState {

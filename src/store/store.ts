@@ -25,7 +25,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: '@AZ',
   storage: AsyncStorage,
-  whitelist: ['auth'], // Os reducers que você quer persistir
+  whitelist: ['auth', 'inventario'], // Os reducers que você quer persistir
 };
 
 const persistedReducer = persistReducer({...persistConfig}, rootReducer);

@@ -36,3 +36,30 @@ interface ICategoria {
   entidadeId: number;
   usuarioId: number;
 }
+
+interface IArtigo {
+  artigoId: number;
+  nome: string;
+  preco: number;
+  unidade: number;
+  descricao?: string | null;
+  validade: Date;
+  created: Date;
+  updated?: Date | null;
+  notaArtigoId?: number | null;
+  categoriaId?: number | null;
+}
+interface ICreateArtigoDto
+  extends Omit<IArtigo, 'artigoId' | 'notaArtigoId' | 'updated' | 'created'> {}
+
+  interface IEditArtigoDto
+  extends Omit<IArtigo,  'notaArtigoId' | 'updated' | 'created'> {}
+
+interface INotaArtigo {
+  notaArtigoId: number;
+  created: Date;
+  updated?: Date | null;
+  Artigo?: Artigo | null;
+  funcionarioId?: number | null;
+  entidadeId?: number | null;
+}

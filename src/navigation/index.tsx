@@ -1,8 +1,9 @@
 import {DarkTheme, DefaultTheme} from '@react-navigation/native';
 import React from 'react';
 import {StatusBar, useColorScheme} from 'react-native';
-import {useAppSelector} from '../hooks/redux';
+import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {NavigationContainer, useTheme} from '../modules/index';
+import {setInventarioPath} from '../store/features/app';
 import AuthStack from './Stack/AuthStack';
 import MainStack from './Stack/MainStack';
 
@@ -11,6 +12,7 @@ const AppNavigator: React.FC<any> = (): React.JSX.Element => {
   const theme = useTheme();
   const isDark = useColorScheme() == 'dark';
   const navigationTheme = theme.dark ? DarkTheme : DefaultTheme;
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -19,7 +21,16 @@ const AppNavigator: React.FC<any> = (): React.JSX.Element => {
         barStyle={isDark ? 'light-content' : 'dark-content'}
         animated={true}
       />
-      <NavigationContainer theme={navigationTheme}>
+      <NavigationContainer
+        onStateChange={state => {
+          if (state?.routes[state?.index].state) {
+            const state2 = state?.routes[state?.index].state;
+
+            const route1 = state2?.routes[Number(state2?.index)].name;
+            dispatch(setInventarioPath(String(route1)));
+          }
+        }}
+        theme={navigationTheme}>
         {!isAuthenticated ? <AuthStack /> : <MainStack />}
       </NavigationContainer>
     </>

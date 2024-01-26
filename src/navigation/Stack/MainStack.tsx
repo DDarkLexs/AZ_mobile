@@ -5,7 +5,7 @@ import {DrawerContent} from '../../components/navigation/DrawerContent';
 import {Routes} from '../../constants/Enum';
 import {createDrawerNavigator, useTheme} from '../../modules/index';
 import HomeScreen from '../../screens/Home.screen';
-import InventarioScreen from '../../screens/Inventario';
+import InventarioScreen from '../../screens/Inventario/Inventario';
 
 const Drawer = createDrawerNavigator<StackScreen>();
 

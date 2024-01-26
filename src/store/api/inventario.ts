@@ -19,27 +19,19 @@ export const inventarioApiSlice = createApi({
     },
   }),
   endpoints: builder => ({
-    // artigos: builder.mutation<any, any>({
-    //   query: bodyData => ({
-    //     url: '/auth',
-    //     method: 'POST',
-    //     body: bodyData,
-    //   }),
-    //   transformResponse: (response: IGrantedUsuario) => response,
-    //   transformErrorResponse: (
-    //     error: any,
-    //     meta: FetchBaseQueryMeta | undefined,
-    //     arg: any,
-    //   ) => {
-    //     if (meta?.response) {
-    //       const msg = Array.isArray(Object(error.data.message))
-    //         ? String(error.data.message[0])
-    //         : String(error.data.message);
-    //       return msg;
-    //     }
-    //     return error;
-    //   },
-    // }),
+    /* 
+    
+ ▄████▄   ▄▄▄      ▄▄▄█████▓▓█████   ▄████  ▒█████   ██▀███   ██▓ ▄▄▄      
+▒██▀ ▀█  ▒████▄    ▓  ██▒ ▓▒▓█   ▀  ██▒ ▀█▒▒██▒  ██▒▓██ ▒ ██▒▓██▒▒████▄    
+▒▓█    ▄ ▒██  ▀█▄  ▒ ▓██░ ▒░▒███   ▒██░▄▄▄░▒██░  ██▒▓██ ░▄█ ▒▒██▒▒██  ▀█▄  
+▒▓▓▄ ▄██▒░██▄▄▄▄██ ░ ▓██▓ ░ ▒▓█  ▄ ░▓█  ██▓▒██   ██░▒██▀▀█▄  ░██░░██▄▄▄▄██ 
+▒ ▓███▀ ░ ▓█   ▓██▒  ▒██▒ ░ ░▒████▒░▒▓███▀▒░ ████▓▒░░██▓ ▒██▒░██░ ▓█   ▓██▒
+░ ░▒ ▒  ░ ▒▒   ▓▒█░  ▒ ░░   ░░ ▒░ ░ ░▒   ▒ ░ ▒░▒░▒░ ░ ▒▓ ░▒▓░░▓   ▒▒   ▓▒█░
+  ░  ▒     ▒   ▒▒ ░    ░     ░ ░  ░  ░   ░   ░ ▒ ▒░   ░▒ ░ ▒░ ▒ ░  ▒   ▒▒ ░
+░          ░   ▒     ░         ░   ░ ░   ░ ░ ░ ░ ▒    ░░   ░  ▒ ░  ░   ▒   
+░ ░            ░  ░            ░  ░      ░     ░ ░     ░      ░        ░  ░
+░                                                                          
+     */
     /* Endpoint: POST /inventario/categoria
             Descrição: Cria uma nova categoria.
             Autorização: Apenas para usuários com cargo de ADMIN.
@@ -93,10 +85,139 @@ export const inventarioApiSlice = createApi({
         return error;
       },
     }),
+
+    updateCategoria: builder.mutation<
+      ICategoria,
+      Pick<ICategoria, 'nome' | 'categoriaId'>
+    >({
+      query: ({categoriaId, nome}) => ({
+        url: `/inventario/categoria/${categoriaId}`,
+        method: 'PUT',
+        body: {nome},
+      }),
+      transformResponse: (response: ICategoria) => response,
+      transformErrorResponse: (
+        error: any,
+        meta: FetchBaseQueryMeta | undefined,
+        arg: any,
+      ) => {
+        if (meta?.response) {
+          const msg = Array.isArray(Object(error.data.message))
+            ? String(error.data.message[0])
+            : String(error.data.message);
+          return msg;
+        }
+        return error;
+      },
+    }),
+
+    deleteCategoria: builder.mutation<ICategoria, {id: number}>({
+      query: ({id}) => ({
+        url: `/inventario/categoria/${id}`,
+        method: 'POST',
+      }),
+      transformResponse: (response: ICategoria) => response,
+      transformErrorResponse: (
+        error: any,
+        meta: FetchBaseQueryMeta | undefined,
+        arg: any,
+      ) => {
+        if (meta?.response) {
+          const msg = Array.isArray(Object(error.data.message))
+            ? String(error.data.message[0])
+            : String(error.data.message);
+          return msg;
+        }
+        return error;
+      },
+    }),
+    /* 
+    
+ ▄▄▄       ██▀███  ▄▄▄█████▓ ██▓  ▄████  ▒█████  
+▒████▄    ▓██ ▒ ██▒▓  ██▒ ▓▒▓██▒ ██▒ ▀█▒▒██▒  ██▒
+▒██  ▀█▄  ▓██ ░▄█ ▒▒ ▓██░ ▒░▒██▒▒██░▄▄▄░▒██░  ██▒
+░██▄▄▄▄██ ▒██▀▀█▄  ░ ▓██▓ ░ ░██░░▓█  ██▓▒██   ██░
+ ▓█   ▓██▒░██▓ ▒██▒  ▒██▒ ░ ░██░░▒▓███▀▒░ ████▓▒░
+ ▒▒   ▓▒█░░ ▒▓ ░▒▓░  ▒ ░░   ░▓   ░▒   ▒ ░ ▒░▒░▒░ 
+  ▒   ▒▒ ░  ░▒ ░ ▒░    ░     ▒ ░  ░   ░   ░ ▒ ▒░ 
+  ░   ▒     ░░   ░   ░       ▒ ░░ ░   ░ ░ ░ ░ ▒  
+      ░  ░   ░               ░        ░     ░ ░  
+     */
+    postArtigo: builder.mutation<IArtigo, ICreateArtigoDto>({
+      query: bodyData => ({
+        url: '/inventario/artigo',
+        method: 'POST',
+        body: bodyData,
+      }),
+      transformResponse: (response: IArtigo) => response,
+      transformErrorResponse: (
+        error: any,
+        meta: FetchBaseQueryMeta | undefined,
+        arg: any,
+      ) => {
+        if (meta?.response) {
+          const msg = Array.isArray(Object(error.data.message))
+            ? String(error.data.message[0])
+            : String(error.data.message);
+          return msg;
+        }
+        return error;
+      },
+    }),
+    getArtigos: builder.query<IArtigo[], void>({
+      query: () => ({
+        url: '/inventario/artigo',
+        method: 'GET',
+        // body: bodyData,
+      }),
+      transformResponse: (response: IArtigo[]) => response,
+      transformErrorResponse: (
+        error: any,
+        meta: FetchBaseQueryMeta | undefined,
+        arg: any,
+      ) => {
+        if (meta?.response) {
+          const msg = Array.isArray(Object(error.data.message))
+            ? String(error.data.message[0])
+            : String(error.data.message);
+          return msg;
+        }
+        return error;
+      },
+    }),
+    updateAtigo: builder.mutation<IArtigo, IEditArtigoDto>({
+      query: bodyData => ({
+        url: `/inventario/artigo`,
+        method: 'PUT',
+        body: bodyData,
+      }),
+      transformResponse: (response: IArtigo) => response,
+      transformErrorResponse: (
+        error: any,
+        meta: FetchBaseQueryMeta | undefined,
+        arg: any,
+      ) => {
+        if (meta?.response) {
+          const msg = Array.isArray(Object(error.data.message))
+            ? String(error.data.message[0])
+            : String(error.data.message);
+          return msg;
+        }
+        return error;
+      },
+    }),
   }),
 });
 
-export const {usePostCategoriaMutation, useGetCategoriasQuery} = inventarioApiSlice;
+export const {
+  usePostCategoriaMutation,
+  useGetCategoriasQuery,
+  useDeleteCategoriaMutation,
+  useUpdateCategoriaMutation,
+  usePostArtigoMutation,
+  useGetArtigosQuery,
+  useUpdateAtigoMutation
+} = inventarioApiSlice;
 
 /* 
 Documentação da API de Inventario

@@ -3,6 +3,9 @@ export enum Routes {
   REGISTER = 'REGISTRO',
   HOME = 'PRINCIPAL',
   INVENTARIO = 'INVENTÁRIO',
+  POST_ARTIGO = 'CRIAR-ARTIGO',
+  EDIT_ARTIGO = 'EDITAR-ARTIGO',
+  ARTIGO = 'ARTIGOS',
 }
 export enum Cargo {
   ADMIN = 'ADMIN',

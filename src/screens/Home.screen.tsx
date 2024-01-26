@@ -5,6 +5,7 @@ import {Icon, Subheading, Text} from 'react-native-paper';
 import {Routes} from '../constants/Enum';
 import Font from '../constants/Font';
 import {useAuth} from '../hooks/useAuth';
+import Layout from '../constants/Layout';
 interface OperationProp {
   icon: string;
   label: string;
@@ -63,8 +64,8 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
   ];
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={Layout.screenLayout}>
+      <View style={Layout.screenHeader}>
         <Text style={{...Font.extraBold}}>
           {saudacaoPorPeriodoDoDia(data.titulo)}
         </Text>
@@ -101,7 +102,7 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 8,
   },
   header: {
     marginBottom: 50,

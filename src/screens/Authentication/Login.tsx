@@ -6,6 +6,7 @@ import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import {useAppToast} from '../../hooks/useToast';
 import {useAuthenticateMutation} from '../../store/api/auth';
 import {setUsuario} from '../../store/features/auth';
+import Layout from '../../constants/Layout';
 
 // Componente da página de login
 const LoginScreen: React.FC = () => {
@@ -112,7 +113,6 @@ const LoginScreen: React.FC = () => {
         mode="contained"
         disabled={isLoading}
         loading={isLoading}
-        textColor="white"
         style={{borderRadius: theme.roundness}}
         onPress={handleLogin}>
         Entrar
@@ -124,7 +124,7 @@ const LoginScreen: React.FC = () => {
 // Estilos
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    ...Layout.screenLayout,
     padding: 20,
     justifyContent: 'center',
   },

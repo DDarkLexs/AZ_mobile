@@ -118,7 +118,10 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (
               />
             )}
             label="Terminar sessão"
-            onPress={logOutAccount}
+            onPress={() => {
+              props.navigation.toggleDrawer();
+              logOutAccount();
+            }}
           />
         </Drawer.Section>
       </View>

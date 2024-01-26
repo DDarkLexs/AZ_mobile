@@ -5,8 +5,9 @@ import {BaseToast, ErrorToast} from 'react-native-toast-message';
 */
 
 import React from 'react';
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
-import {Avatar, Paragraph, Title, useTheme} from 'react-native-paper';
+import {Dimensions, Image, StyleSheet, View} from 'react-native';
+import {Paragraph, Title, useTheme} from 'react-native-paper';
+import Font from '../../../constants/Font';
 
 export const PrimaryNotification: React.FC<ToastNotificationProps> = ({
   text1,
@@ -20,14 +21,12 @@ export const PrimaryNotification: React.FC<ToastNotificationProps> = ({
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: 'white',
+      backgroundColor: theme.colors.background,
       padding: 15,
-      height: 'auto',
-      width: containerWidth,
       borderRadius: 4,
-      //   borderColor: 'red',
-      //   borderWidth: 0.5,
+      width: containerWidth,
+      borderColor: theme.colors.primary,
+      borderWidth: 0.5,
     },
     header: {
       flexDirection: 'row',
@@ -65,26 +64,27 @@ export const PrimaryNotification: React.FC<ToastNotificationProps> = ({
       fontSize: 20,
       fontWeight: 'bold',
       marginBottom: 10,
+      color: theme.colors.onBackground,
     },
     paragraph: {
       fontSize: 16,
-      color: 'gray',
+      color: theme.colors.onBackground,
     },
   });
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <Avatar.Icon size={24} icon="bell" style={styles.icon} />
         <Text style={styles.notificationLabel}>Notificação agora!</Text>
-      </View>
+      </View> */}
 
       <View style={styles.content}>
         <View style={styles.imageContainer}>
           <Image source={img} style={styles.image} resizeMode="contain" />
         </View>
         <View style={styles.textContainer}>
-          <Title style={styles.title}>{text1}</Title>
+          <Title style={{...styles.title, ...Font.bold}}>{text1}</Title>
           <Paragraph style={styles.paragraph}>
             {text2}
             {/* Chama-se Adilson, e o seu carro é um Hyundai I10, LD-30-42-20 */}
@@ -124,8 +124,8 @@ export const ErrorNotification: React.FC<ToastNotificationProps> = ({
       padding: 15,
       borderRadius: 4,
       borderWidth: 1,
-      borderColor: '#ff000080', // Vermelho mais claro - ajuste a transparência conforme necessário
       width: containerWidth,
+      borderColor: '#ff000080', // Vermelho mais claro - ajuste a transparência conforme necessário
     },
     header: {
       flexDirection: 'row',
@@ -154,7 +154,7 @@ export const ErrorNotification: React.FC<ToastNotificationProps> = ({
     image: {
       width: 80,
       height: 80,
-      marginTop:15,
+      marginTop: 15,
       borderRadius: 6,
     },
     textContainer: {
@@ -184,7 +184,7 @@ export const ErrorNotification: React.FC<ToastNotificationProps> = ({
           <Image source={img} style={styles.image} resizeMode="contain" />
         </View>
         <View style={styles.textContainer}>
-          <Title style={styles.title}>{text1}</Title>
+          <Title style={{...styles.title, ...Font.bold}}>{text1}</Title>
           <Paragraph style={styles.paragraph}>
             {text2}
             {/* Chama-se Adilson, e o seu carro é um Hyundai I10, LD-30-42-20 */}

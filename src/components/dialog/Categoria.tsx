@@ -15,6 +15,7 @@ import {useAppToast} from '../../hooks/useToast';
 import {
   useGetCategoriasQuery,
   usePostCategoriaMutation,
+  useUpdateCategoriaMutation,
 } from '../../store/api/inventario';
 import {setCategorias} from '../../store/features/inventario';
 
@@ -28,20 +29,26 @@ const CategoryCrudDialog: React.FC<CategoryTableProps> = ({
   onCloseDialog,
 }) => {
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
+  const [editingCategoryId, setEditingCategoryId] = useState<number | null>(
+    null,
+  );
   const [creatingArticle, setCreatingArticle] = useState(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [creatingArticleText, setCreatingArticleText] = useState<string>('');
   const theme = useTheme();
   const [save, pc] = usePostCategoriaMutation();
+  const [update, updateApi] = useUpdateCategoriaMutation();
   const query = useGetCategoriasQuery();
   const {showErrorToast} = useAppToast();
   const dispatch = useAppDispatch();
   const {categorias} = useAppSelector(state => state.inventario);
 
-  const categories = [
-    {id: 1, name: 'Category 1'},
-    {id: 2, name: 'Category 2'},
-    // Adicione suas categorias reais aqui
-  ];
+  const updateCategoria = () => {
+    update({
+      nome: String(editingCategory),
+      categoriaId: Number(editingCategoryId),
+    });
+  };
 
   const handleEditCategory = (categoryName: string) => {
     setEditingCategory(categoryName);
@@ -54,11 +61,27 @@ const CategoryCrudDialog: React.FC<CategoryTableProps> = ({
   const handleCreateArticle = () => {
     setCreatingArticle(true);
   };
+  useEffect(() => {
+    if (openDialog) {
+        query.refetch();
+    }
+    
+  }, [openDialog])
+  
 
   const handleSaveArticle = () => {
     // Lógica para salvar o artigo
     save({nome: creatingArticleText});
   };
+
+  useEffect(() => {
+    if (updateApi.isSuccess) {
+      setEditingCategory(null);
+      setEditingCategoryId(null);
+      setIsEditing(false);
+      query.refetch();
+    }
+  }, [updateApi]);
   useEffect(() => {
     if (pc.isSuccess) {
       query.refetch();
@@ -86,6 +109,12 @@ const CategoryCrudDialog: React.FC<CategoryTableProps> = ({
         visible={openDialog}
         onDismiss={onCloseDialog}>
         <Dialog.Title>Categorias</Dialog.Title>
+        <View>
+          <HelperText type="error">
+            {updateApi.isError && JSON.stringify(updateApi.error)}
+            {query.isError && JSON.stringify(query.error)}
+          </HelperText>
+        </View>
         <Dialog.Content>
           {creatingArticle ? (
             // Formulário para criar categoria
@@ -125,7 +154,7 @@ const CategoryCrudDialog: React.FC<CategoryTableProps> = ({
                 textColor="white"
                 buttonColor={theme.colors.error}
                 style={{marginBottom: 16, borderRadius: theme.roundness}}
-                onPress={handleSaveArticle}>
+                onPress={() => setCreatingArticle(false)}>
                 cancelar
               </Button>
             </View>
@@ -141,13 +170,14 @@ const CategoryCrudDialog: React.FC<CategoryTableProps> = ({
                 categorias.map(category => (
                   <DataTable.Row key={category.categoriaId}>
                     <DataTable.Cell>
-                      {editingCategory === category.nome ? (
+                      {editingCategoryId === category.categoriaId ? (
                         // Campo de input durante a edição
                         <TextInput
-                          value={category.nome}
+                          value={String(editingCategory)}
                           mode="outlined"
+                          onChangeText={text => setEditingCategory(text)}
                           label="Nome da Categoria"
-                          disabled={query.isLoading}
+                          disabled={query.isLoading || updateApi.isLoading}
                         />
                       ) : (
                         // Nome da categoria
@@ -156,29 +186,46 @@ const CategoryCrudDialog: React.FC<CategoryTableProps> = ({
                     </DataTable.Cell>
 
                     <DataTable.Cell>
-                      {!editingCategory && (
+                      {!isEditing && (
                         <>
                           <IconButton
                             icon="pencil"
-                            disabled={query.isLoading}
-                            onPress={() => handleEditCategory(category.nome)}
+                            disabled={query.isLoading || updateApi.isLoading}
+                            onPress={() => {
+                              setEditingCategoryId(category.categoriaId);
+                              handleEditCategory(category.nome);
+                              setIsEditing(true);
+                            }}
                           />
-
                           <IconButton
                             icon="delete"
-                            disabled={query.isLoading}
+                            disabled={query.isLoading || updateApi.isLoading}
                             onPress={() =>
                               handleDeleteCategory(category.categoriaId)
                             }
                           />
                         </>
                       )}
-                      {editingCategory && editingCategory === category.nome && (
-                        <IconButton
-                          icon="content-save"
-                          onPress={() => setEditingCategory(null)}
-                        />
-                      )}
+
+                      {editingCategory &&
+                        editingCategoryId === category.categoriaId && (
+                          <>
+                            <IconButton
+                              disabled={updateApi.isLoading}
+                              icon="content-save"
+                              onPress={updateCategoria}
+                            />
+                            <IconButton
+                              disabled={updateApi.isLoading}
+                              icon="close"
+                              onPress={() => {
+                                setEditingCategoryId(null);
+                                setEditingCategory(null);
+                                setIsEditing(false);
+                              }}
+                            />
+                          </>
+                        )}
                     </DataTable.Cell>
                   </DataTable.Row>
                 ))}
@@ -192,18 +239,18 @@ const CategoryCrudDialog: React.FC<CategoryTableProps> = ({
               mode="contained"
               textColor="white"
               buttonColor={theme.colors.primary}
-              disabled={pc.isLoading || query.isLoading}
-              loading={pc.isLoading || query.isLoading}
+              disabled={pc.isLoading || query.isLoading || updateApi.isLoading}
+              loading={pc.isLoading || query.isLoading || updateApi.isLoading}
               style={{borderRadius: theme.roundness}}
               onPress={handleCreateArticle}>
-              Criar Artigo
+              Criar
             </Button>
           )}
           <Button
             mode="contained"
             textColor="white"
-            disabled={pc.isLoading || query.isLoading}
-            loading={pc.isLoading || query.isLoading}
+            disabled={pc.isLoading || query.isLoading || updateApi.isLoading}
+            loading={pc.isLoading || query.isLoading || updateApi.isLoading}
             style={{borderRadius: theme.roundness}}
             buttonColor={theme.colors.error}
             onPress={onCloseDialog}>
