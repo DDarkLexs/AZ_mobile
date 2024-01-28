@@ -23,7 +23,6 @@ function App(): JSX.Element {
       <StoreProvider store={store}>
         <PaperProvider theme={theme}>
           <SafeAreaView style={{flex: 1}}>
-            {/* <Text>Ola mundo, como vai!</Text> */}
             <AppNavigator />
             <Toast config={toastConfig} />
           </SafeAreaView>

@@ -1,11 +1,11 @@
 import {DrawerScreenProps} from '@react-navigation/drawer';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Subheading, Text} from 'react-native-paper';
+import {Icon, Subheading, Text, useTheme} from 'react-native-paper';
 import {Routes} from '../constants/Enum';
 import Font from '../constants/Font';
-import {useAuth} from '../hooks/useAuth';
 import Layout from '../constants/Layout';
+import {useAuth} from '../hooks/useAuth';
 interface OperationProp {
   icon: string;
   label: string;
@@ -15,6 +15,7 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
   navigation,
   route,
 }) => {
+  const theme = useTheme();
   const {usuario} = useAuth();
   function saudacaoPorPeriodoDoDia(data: Date): string {
     const hora = data.getHours();
@@ -63,6 +64,39 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
     },
   ];
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 8,
+    },
+    header: {
+      marginBottom: 50,
+    },
+    operacao: {
+      marginBottom: 16,
+      ...Font.extraBold,
+    },
+    colunasContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    coluna: {
+      flex: 1,
+      borderWidth: 0,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      borderColor: '#ccc',
+      backgroundColor: '#808080',
+      borderRadius: theme.roundness,
+      padding: 8,
+      marginBottom: 8,
+      marginHorizontal: 10,
+    },
+    colunaHeader: {},
+    colunaContent: {},
+  });
+  
+
   return (
     <View style={Layout.screenLayout}>
       <View style={Layout.screenHeader}>
@@ -77,7 +111,12 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
       </View>
       <View style={styles.colunasContainer}>
         {operation1.map(({icon, label}, i) => (
-          <View key={i} style={styles.coluna}>
+          <View
+            key={i}
+            style={{
+              ...styles.coluna,
+              backgroundColor: theme.colors.inverseOnSurface,
+            }}>
             <View style={styles.colunaHeader}>
               <Icon size={30} source={icon} />
               <Text>{label}</Text>
@@ -87,7 +126,12 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
       </View>
       <View style={styles.colunasContainer}>
         {operation2.map(({icon, label}, i) => (
-          <View key={i} style={styles.coluna}>
+          <View
+            key={i}
+            style={{
+              ...styles.coluna,
+              backgroundColor: theme.colors.inverseOnSurface,
+            }}>
             <View style={styles.colunaHeader}>
               <Icon size={30} source={icon} />
               <Text>{label}</Text>
@@ -99,36 +143,5 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 8,
-  },
-  header: {
-    marginBottom: 50,
-  },
-  operacao: {
-    marginBottom: 16,
-    ...Font.extraBold,
-  },
-  colunasContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  coluna: {
-    flex: 1,
-    borderWidth: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderColor: '#ccc',
-    backgroundColor: '#808080',
-    borderRadius: 8,
-    padding: 8,
-    marginBottom: 8,
-    marginHorizontal: 10,
-  },
-  colunaHeader: {},
-  colunaContent: {},
-});
 
 export default HomeScreen;

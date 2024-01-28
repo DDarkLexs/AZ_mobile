@@ -9,44 +9,18 @@ import {
   TextInput,
   useTheme,
 } from 'react-native-paper';
-import CustomCardArtigo from '../../components/ArtigoCard';
+import CustomCardArtigo from '../../components/card/ArtigoCard';
 import CategoryCrudDialog from '../../components/dialog/Categoria';
 import {Routes} from '../../constants/Enum';
 import Font from '../../constants/Font';
 import Layout from '../../constants/Layout';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import {useAppToast} from '../../hooks/useToast';
-import {createStackNavigator} from '../../modules';
 import {
   useGetArtigosQuery,
   useGetCategoriasQuery,
 } from '../../store/api/inventario';
 import {setArtigos, setCategorias} from '../../store/features/inventario';
-import ArtigoFormScreen from './CriarArtigo';
-import EditarArtigoFormScreen from './EditarArtigo';
-
-const Stack = createStackNavigator<StackScreen>();
-
-const InvantarioStack: React.FC = (): React.JSX.Element => {
-  const theme = useTheme();
-  return (
-    <Stack.Navigator 
-    initialRouteName={Routes.ARTIGO}>
-      <Stack.Group
-        screenOptions={{
-          headerShown: false,
-          contentStyle: {backgroundColor: theme.colors.background},
-        }}>
-        <Stack.Screen name={Routes.ARTIGO} component={ArtigoScreen} />
-        <Stack.Screen name={Routes.POST_ARTIGO} component={ArtigoFormScreen} />
-        <Stack.Screen
-          name={Routes.EDIT_ARTIGO}
-          component={EditarArtigoFormScreen}
-        />
-      </Stack.Group>
-    </Stack.Navigator>
-  );
-};
 
 const ArtigoScreen: React.FC<
   NativeStackScreenProps<StackScreen, Routes.ARTIGO>
@@ -61,14 +35,14 @@ const ArtigoScreen: React.FC<
   const query = useGetArtigosQuery();
   const Cquery = useGetCategoriasQuery();
   const {showErrorToast} = useAppToast();
-  const {inventarioPath} = useAppSelector(state => state.app);
+  const {routePath} = useAppSelector(state => state.app);
   useEffect(() => {
-    if (!!inventarioPath) {
+    if (routePath === route.name) {
       query.refetch();
     }
-  }, [inventarioPath]);
+  }, [routePath]);
   useEffect(() => {
-    if (query.data) {
+    if (query.isSuccess) {
       dispatch(setArtigos(query.data));
     }
   }, [query.data]);
@@ -114,12 +88,17 @@ const ArtigoScreen: React.FC<
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginHorizontal: 18,
           }}>
           <TextInput
             mode="outlined"
             disabled={query.isLoading}
-            left={<TextInput.Icon icon={'magnify'} />}
+            left={
+              <TextInput.Icon
+                loading={query.isLoading}
+                disabled={query.isLoading}
+                icon={'magnify'}
+              />
+            }
             placeholder="pesquisar"
             dense={true}
             style={{flex: 1, marginRight: 8}}
@@ -185,7 +164,7 @@ const ArtigoScreen: React.FC<
         open={fabOpen}
         onPress={() => setFabOpen(state => !state)}
         visible={true}
-        fabStyle={{borderRadius: 50}}
+        fabStyle={{borderRadius: 50, left: 0}}
         icon={fabOpen ? 'close' : 'storefront'}
         actions={[
           {
@@ -221,4 +200,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InvantarioStack;
+export default ArtigoScreen;

@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {
+  ActivityIndicator,
   Card,
   Icon,
   Menu,
-  Paragraph,
   Surface,
   useTheme,
 } from 'react-native-paper';
-import Font from '../constants/Font';
-import {useAppSelector} from '../hooks/redux';
-import {useAppToast} from '../hooks/useToast';
-import {convertToCurrency} from '../utils/functions';
+import Font from '../../constants/Font';
+import {useAppSelector} from '../../hooks/redux';
+import {useAppToast} from '../../hooks/useToast';
+import {convertToCurrency} from '../../utils/functions';
 
 interface CustomCardProps {
   item: IArtigo; // Substitua "YourItemType" pelo tipo real do seu item
@@ -29,14 +29,13 @@ const CustomCardArtigo: React.FC<CustomCardProps> = ({
   loading = false,
 }) => {
   const theme = useTheme();
-  const [menuVisible, setMenuVisible] = useState<boolean>(false);
   const {artigos, categorias} = useAppSelector(state => state.inventario);
   const {showErrorToast} = useAppToast();
 
+  const [menuVisible, setMenuVisible] = useState<boolean>(false);
   const showMenu = () => {
     setMenuVisible(true);
   };
-
   const closeMenu = () => {
     setMenuVisible(false);
   };
@@ -51,7 +50,7 @@ const CustomCardArtigo: React.FC<CustomCardProps> = ({
             disabled={loading}
             mode="elevated"
             onPress={showMenu}
-            style={{margin: 12, borderRadius: 2}}>
+            style={{margin: 12, borderRadius: theme.roundness}}>
             <Card.Content style={{flexDirection: 'row', alignItems: 'center'}}>
               {/* Ícone à esquerda */}
               <Surface
@@ -61,31 +60,39 @@ const CustomCardArtigo: React.FC<CustomCardProps> = ({
                   padding: 5,
                   borderRadius: theme.roundness,
                 }}>
-                <Icon
-                  source="package-variant-closed"
-                  size={30}
-                  color={theme.colors.primary}
-                />
+                {loading ? (
+                  <ActivityIndicator color={theme.colors.primary} />
+                ) : (
+                  <Icon
+                    source="package-variant-closed"
+                    size={30}
+                    color={theme.colors.primary}
+                  />
+                )}
               </Surface>
               {/* Título do artigo */}
               <View style={{flex: 1}}>
                 <Text style={{...Font.bold, fontWeight: 'bold'}}>
                   {item.nome}
                 </Text>
-                <Paragraph>
+                <Text>
                   {categorias.find(
                     state => state.categoriaId === item.categoriaId,
                   )?.nome || ''}
-                </Paragraph>
-                <Paragraph>
-                  {new Date(item.validade).toLocaleDateString('pt')}
-                </Paragraph>
+                </Text>
+                <Text>
+                  {item?.validade
+                    ? new Date(item?.validade || new Date()).toLocaleDateString(
+                        'pt',
+                      )
+                    : 'Sem data validade'}
+                </Text>
               </View>
               {/* Unidade e preço */}
               <View>
                 <Text style={{textAlign: 'right'}}>{item.unidade} unidade</Text>
                 <Text style={{fontWeight: 'bold', textAlign: 'right'}}>
-                  {convertToCurrency(item.preco)}
+                  {convertToCurrency(Number(item.preco))}
                 </Text>
               </View>
             </Card.Content>

@@ -1,9 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-interface InventarioState {
-  categorias: ICategoria[];
-  artigos: IArtigo[];
-}
 
 const initialState: InventarioState = {
   categorias: [],

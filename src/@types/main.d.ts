@@ -40,10 +40,10 @@ interface ICategoria {
 interface IArtigo {
   artigoId: number;
   nome: string;
-  preco: number;
+  preco: string;
   unidade: number;
   descricao?: string | null;
-  validade: Date;
+  validade: Date | null;
   created: Date;
   updated?: Date | null;
   notaArtigoId?: number | null;
@@ -52,8 +52,8 @@ interface IArtigo {
 interface ICreateArtigoDto
   extends Omit<IArtigo, 'artigoId' | 'notaArtigoId' | 'updated' | 'created'> {}
 
-  interface IEditArtigoDto
-  extends Omit<IArtigo,  'notaArtigoId' | 'updated' | 'created'> {}
+interface IEditArtigoDto
+  extends Omit<IArtigo, 'notaArtigoId' | 'updated' | 'created'> {}
 
 interface INotaArtigo {
   notaArtigoId: number;
@@ -63,3 +63,52 @@ interface INotaArtigo {
   funcionarioId?: number | null;
   entidadeId?: number | null;
 }
+
+interface IPermissao {
+  upermissaoId: number;
+  cargo: Cargo;
+  ativo: boolean;
+  created: string;
+  updated: string;
+  UsuarioId: number;
+  funcionarioEmEntidadeId: number;
+}
+
+interface IFuncionario {
+  funcionarioId: number;
+  imagem: string | null; // Update the type based on your actual use case
+  nome: string;
+  email: string;
+  bi: string;
+  sexo: Sexo;
+  endereco: string;
+  nascimento: Date | string;
+  created: string;
+  updated: string;
+}
+
+interface Usuario {
+  usuarioId: number;
+  contacto: string;
+  senha: string;
+  created: string;
+  updated: string;
+  funcionarioId: number;
+}
+interface IUsuario {
+  usuarioId: number;
+  contacto: string;
+  senha: string;
+  created: string;
+  updated: string;
+  funcionarioId: number;
+  Permissao: IPermissao;
+  Funcionario: IFuncionario;
+}
+
+interface IEditUsuario {
+  Usuario: Usuario;
+  Permissao: IPermissao;
+  Funcionario: IFuncionario;
+}
+

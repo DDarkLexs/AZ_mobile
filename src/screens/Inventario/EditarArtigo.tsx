@@ -3,6 +3,8 @@ import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
   Button,
+  Checkbox,
+  HelperText,
   Subheading,
   Text,
   TextInput,
@@ -11,10 +13,9 @@ import {
 import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import {
   useGetCategoriasQuery,
-  usePostArtigoMutation,
   useUpdateAtigoMutation,
 } from '../../store/api/inventario';
-import {pushArtigo, setCategorias} from '../../store/features/inventario';
+import {setCategorias} from '../../store/features/inventario';
 // import {DropdownSelect as Dropdown} from 'react-native-input-select';
 import DateTimePicker, {
   DateTimePickerEvent,
@@ -37,11 +38,20 @@ const EditarArtigoFormScreen: React.FC<
   const [save, saveApi] = useUpdateAtigoMutation();
   //   const navigation = useAppNavigation();
   const theme = useTheme();
-  const [visible, setVisible] = React.useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [visible, setVisible] = React.useState<boolean>(false);
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+  const [datePicker, setDatePicker] = useState(new Date());
   const [loading, setLoading] = useState<boolean>(
     CQuery.isLoading || saveApi.isLoading,
   );
+  const [isOptional, setIsOptional] = useState<boolean>(!!artigoData.validade);
+  useEffect(() => {
+    if (!isOptional) {
+      setArtigoData({...artigoData, validade: null});
+    } else {
+      setArtigoData({...artigoData, validade: artigoData.validade});
+    }
+  }, [isOptional]);
 
   useEffect(() => {
     setLoading(CQuery.isLoading || saveApi.isLoading);
@@ -64,7 +74,7 @@ const EditarArtigoFormScreen: React.FC<
         text2: 'O seu artigo foi atualizado com êxito.',
         img: require('../../assets/image/check.png'),
       });
-    //   dispatch(pushArtigo(saveApi.data));
+      //   dispatch(pushArtigo(saveApi.data));
     }
     if (saveApi.isError) {
       showErrorToast({
@@ -107,6 +117,7 @@ const EditarArtigoFormScreen: React.FC<
   ) => {
     hideDatePicker();
     if (selectedDate) {
+      setDatePicker(selectedDate)
       handleInputChange('validade', selectedDate);
     }
   };
@@ -142,9 +153,7 @@ const EditarArtigoFormScreen: React.FC<
         style={styles.input}
         disabled={loading}
         value={artigoData.preco.toString()}
-        onChangeText={text =>
-          setArtigoData({...artigoData, preco: parseFloat(text) || 0})
-        }
+        onChangeText={preco => setArtigoData({...artigoData, preco})}
       />
       <Menu
         visible={visible}
@@ -187,8 +196,8 @@ const EditarArtigoFormScreen: React.FC<
         style={styles.input}
         keyboardType="number-pad"
         value={artigoData.unidade.toString()}
-        onChangeText={text =>
-          setArtigoData({...artigoData, unidade: parseInt(text) || 0})
+        onChangeText={unidade =>
+          setArtigoData({...artigoData, unidade: Number(unidade)})
         }
       />
       <TextInput
@@ -202,16 +211,41 @@ const EditarArtigoFormScreen: React.FC<
       <TextInput
         label="Validade"
         mode="outlined"
-        disabled={loading}
+        disabled={loading || !isOptional}
         style={styles.input}
         showSoftInputOnFocus={false}
-        // right={}
-        onPressIn={showDatepicker}
-        value={String(new Date(artigoData.validade).toLocaleDateString('pt-br'))}
+        editable={false}
+        right={
+          <TextInput.Icon
+            onPress={showDatepicker}
+            disabled={loading || !isOptional}
+            loading={loading}
+            icon={'calendar'}
+          />
+        }
+        value={
+          isOptional
+            ? String(
+                new Date(artigoData.validade || new Date()).toLocaleDateString(
+                  'pt-br',
+                  {
+                    dateStyle: 'long',
+                  },
+                ),
+              )
+            : undefined
+        }
       />
+      <View style={{flexDirection: 'row'}}>
+        <Checkbox
+          status={isOptional ? 'checked' : 'unchecked'}
+          onPress={() => setIsOptional(!isOptional)}
+        />
+        <HelperText type="info">Abilitar Data de validade</HelperText>
+      </View>
       {showDatePicker && (
         <DateTimePicker
-          value={artigoData.validade}
+          value={datePicker}
           mode="date"
           disabled={loading}
           display="default"

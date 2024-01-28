@@ -4,6 +4,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {
   Button,
   Checkbox,
+  HelperText,
   Subheading,
   Text,
   TextInput,
@@ -38,7 +39,7 @@ const ArtigoFormScreen: React.FC<
     categoriaId: 0,
     descricao: '',
     nome: '',
-    preco: 0,
+    preco: '0',
     unidade: 1,
     validade: new Date(),
   });
@@ -53,6 +54,14 @@ const ArtigoFormScreen: React.FC<
   const [loading, setLoading] = useState<boolean>(
     CQuery.isLoading || saveApi.isLoading,
   );
+  const [isOptional, setIsOptional] = useState<boolean>(false);
+  useEffect(() => {
+    if (!isOptional) {
+      setArtigoData({...artigoData, validade: null});
+    } else {
+      setArtigoData({...artigoData, validade: new Date()});
+    }
+  }, [isOptional]);
 
   useEffect(() => {
     setLoading(CQuery.isLoading || saveApi.isLoading);
@@ -154,9 +163,7 @@ const ArtigoFormScreen: React.FC<
         style={styles.input}
         disabled={loading}
         value={artigoData.preco.toString()}
-        onChangeText={text =>
-          setArtigoData({...artigoData, preco: parseFloat(text) || 0})
-        }
+        onChangeText={preco => setArtigoData({...artigoData, preco})}
       />
       <Menu
         visible={visible}
@@ -214,22 +221,45 @@ const ArtigoFormScreen: React.FC<
       <TextInput
         label="Validade"
         mode="outlined"
-        disabled={loading}
+        disabled={loading || !isOptional}
         style={styles.input}
         showSoftInputOnFocus={false}
-        // right={}
-        onPressIn={showDatepicker}
-        value={String(
-          artigoData.validade.toLocaleDateString('pt-br', {dateStyle: 'long'}),
-        )}
+        editable={false}
+        right={
+          <TextInput.Icon
+            disabled={loading || !isOptional}
+            loading={loading}
+            onPress={showDatepicker}
+            icon={'calendar'}
+          />
+        }
+        value={
+          isOptional
+            ? String(
+                new Date(artigoData.validade || new Date()).toLocaleDateString(
+                  'pt-br',
+                  {
+                    dateStyle: 'long',
+                  },
+                ),
+              )
+            : undefined
+        }
       />
+      <View style={{flexDirection: 'row'}}>
+        <Checkbox
+          status={isOptional ? 'checked' : 'unchecked'}
+          onPress={() => setIsOptional(!isOptional)}
+        />
+        <HelperText type="info">Abilitar Data de validade</HelperText>
+      </View>
       {showDatePicker && (
         <DateTimePicker
-          value={artigoData.validade}
+          value={new Date(String(artigoData.validade)) || new Date()}
           mode="date"
           disabled={loading}
           display="default"
-          onChange={handleDateChange}
+          onChange={isOptional ? undefined : handleDateChange}
         />
       )}
 

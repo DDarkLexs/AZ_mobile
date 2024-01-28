@@ -19,7 +19,7 @@ import {
 } from 'react-native-paper';
 import {useAppDispatch} from '../../hooks/redux';
 import {useAuth} from '../../hooks/useAuth';
-import {navDrawerItem} from '../../utils/data/navigationDrawerIcon';
+import {navDrawerItem} from '../../utils/data/navigationDrawerItem';
 
 export const DrawerContent: React.FC<DrawerContentComponentProps> = (
   props,

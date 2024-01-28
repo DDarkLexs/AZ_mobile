@@ -3,7 +3,7 @@ import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 const initialState: AppState = {
   disabled: false,
   loading: false,
-  inventarioPath: ''
+  routePath: '',
 };
 
 const appSlice = createSlice({
@@ -13,15 +13,16 @@ const appSlice = createSlice({
     setDisabled: (state, action: PayloadAction<boolean>) => {
       state.disabled = action.payload;
     },
-    setInventarioPath: (state, action: PayloadAction<string>) => {
-      state.inventarioPath = action.payload;
+    setRoutePath: (state, action: PayloadAction<string>) => {
+      state.routePath = action.payload;
     },
+
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
   },
 });
 
-export const {setDisabled, setLoading, setInventarioPath} = appSlice.actions;
+export const {setDisabled, setLoading, setRoutePath} = appSlice.actions;
 
 export default appSlice.reducer;

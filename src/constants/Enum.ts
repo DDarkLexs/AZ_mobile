@@ -6,6 +6,11 @@ export enum Routes {
   POST_ARTIGO = 'CRIAR-ARTIGO',
   EDIT_ARTIGO = 'EDITAR-ARTIGO',
   ARTIGO = 'ARTIGOS',
+  // Painel de Controle de Usuários
+  USER_ADMIN = 'USUARIO_ADMIN',
+  USER_LIST = 'LISTA_USUARIO',
+  POST_USER = 'REGISTRAR_USUARIO',
+  // USERS = 'USUARIOS',
 }
 export enum Cargo {
   ADMIN = 'ADMIN',

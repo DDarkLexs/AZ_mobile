@@ -2,11 +2,11 @@
 import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {Button, Checkbox, Text, TextInput, useTheme} from 'react-native-paper';
+import Layout from '../../constants/Layout';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import {useAppToast} from '../../hooks/useToast';
 import {useAuthenticateMutation} from '../../store/api/auth';
-import {setUsuario} from '../../store/features/auth';
-import Layout from '../../constants/Layout';
+import {setAuthBiometric, setUsuario} from '../../store/features/auth';
 
 // Componente da página de login
 const LoginScreen: React.FC = () => {
@@ -14,6 +14,8 @@ const LoginScreen: React.FC = () => {
   const [senha, setSenha] = useState<string>('');
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const loading = useAppSelector(state => state.app.loading);
+  const {authBiometrico} = useAppSelector(state => state.auth);
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(true);
   const [authenticate, {isLoading, isSuccess, data, isError, error}] =
     useAuthenticateMutation();
   const dispatch = useAppDispatch();
@@ -82,6 +84,13 @@ const LoginScreen: React.FC = () => {
       <TextInput
         label="Palavra-passe"
         disabled={isLoading}
+        right={
+          <TextInput.Icon
+            onPress={() => setPasswordVisible(state => !state)}
+            icon={passwordVisible ? 'eye' : 'eye-off'}
+          />
+        }
+        secureTextEntry={passwordVisible}
         value={senha}
         mode="outlined"
         left={
@@ -100,11 +109,11 @@ const LoginScreen: React.FC = () => {
       <View style={styles.checkboxContainer}>
         <Checkbox
           disabled={isLoading}
-          status={rememberMe ? 'checked' : 'unchecked'}
-          onPress={() => setRememberMe(!rememberMe)}
+          status={authBiometrico ? 'checked' : 'unchecked'}
+          onPress={() => dispatch(setAuthBiometric(!authBiometrico))}
         />
         <Text disabled={loading} style={styles.checkboxLabel}>
-          Lembrar de autenticar
+          autenticar com biométrico!
         </Text>
       </View>
 
@@ -158,7 +167,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
-    
   },
 });
 
