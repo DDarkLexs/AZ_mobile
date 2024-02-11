@@ -37,7 +37,6 @@ const UsuariosScreen: React.FC<
   const {showPrimaryToast, showErrorToast} = useAppToast();
   useEffect(() => {
     if (query.isSuccess) {
-      console.log('atualizado: ' + query.data.length);
       dispatch(setUsuariosList(query.data));
     }
   }, [query.fulfilledTimeStamp]);
@@ -54,7 +53,7 @@ const UsuariosScreen: React.FC<
         text2: JSON.stringify(query.error),
       });
     }
-  }, [query.isError]);
+  }, [query.fulfilledTimeStamp]);
 
   const [visibleMenu1, setVisibleMenu1] = useState(false);
 

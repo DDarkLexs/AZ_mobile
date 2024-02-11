@@ -10,9 +10,10 @@ import {
   Text,
   useTheme,
 } from 'react-native-paper';
-import {Cargo} from '../../constants/Enum';
+import {Cargo, Routes} from '../../constants/Enum';
 import Font from '../../constants/Font';
 import {API_BASE_URL} from '../../constants/Index';
+import {useAppNavigation} from '../../hooks/useNavigation';
 import {calcularIdade} from '../../utils/functions';
 
 interface UserCardProps {
@@ -21,6 +22,7 @@ interface UserCardProps {
 
 const UserCard: React.FC<UserCardProps> = ({user}) => {
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
+  const navigation = useAppNavigation();
   const showMenu = () => {
     setMenuVisible(true);
   };
@@ -28,6 +30,20 @@ const UserCard: React.FC<UserCardProps> = ({user}) => {
   const closeMenu = () => {
     setMenuVisible(false);
   };
+  const alterarUsuario = () => {
+    const F: IFuncionario = user.Funcionario;
+    const P: IPermissao = user.Permissao;
+
+    const {Funcionario, Permissao, ...usuario} = user;
+
+    navigation.navigate(Routes.EDIT_USER, {
+      Funcionario: F,
+      Permissao: P,
+      Usuario: usuario,
+    });
+    closeMenu();
+  };
+
   const theme = useTheme();
   const avatarBadgeColor = user.Permissao.ativo
     ? '#83bf6e'
@@ -147,10 +163,7 @@ const UserCard: React.FC<UserCardProps> = ({user}) => {
       />
       <Menu.Item
         leadingIcon={'pencil'}
-        onPress={() => {
-          closeMenu();
-          // onEditPress(item);
-        }}
+        onPress={alterarUsuario}
         title="Editar"
       />
       <Menu.Item

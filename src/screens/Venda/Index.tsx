@@ -1,15 +1,14 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
+import {useTheme} from 'react-native-paper';
 import {Routes} from '../../constants/Enum';
 import {createStackNavigator} from '../../modules';
-import UsuariosScreen from './Usuarios';
-import CreateUserScreen from './CriarUsuario';
-import EditUserScreen from './EditarUsuario';
+import SaleArtigoScreen from './Artigos';
+import CaixaScreen from './Caixa';
 
 const Stack = createStackNavigator<StackScreen>();
 
-const UsuarioAdminStack: React.FC = (): React.JSX.Element => {
+const GestaoComercialStack: React.FC = (): React.JSX.Element => {
   const theme = useTheme();
   return (
     <Stack.Navigator>
@@ -18,9 +17,17 @@ const UsuarioAdminStack: React.FC = (): React.JSX.Element => {
           headerShown: false,
           contentStyle: {backgroundColor: theme.colors.background},
         }}>
-        <Stack.Screen name={Routes.USER_LIST} component={UsuariosScreen} />
-        <Stack.Screen name={Routes.POST_USER} component={CreateUserScreen} />
-        <Stack.Screen name={Routes.EDIT_USER} component={EditUserScreen} />
+        <Stack.Screen name={Routes.BOX_SALE} component={CaixaScreen} />
+        <Stack.Screen
+          name={Routes.SALE_ARTICLES}
+          component={SaleArtigoScreen}
+        />
+        {/* <Stack.Screen name={Routes.POST_ARTIGO} component={ArtigoFormScreen} />
+        <Stack.Screen
+          name={Routes.EDIT_ARTIGO}
+          component={EditarArtigoFormScreen}
+        /> 
+         */}
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -39,4 +46,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UsuarioAdminStack;
+export default GestaoComercialStack;

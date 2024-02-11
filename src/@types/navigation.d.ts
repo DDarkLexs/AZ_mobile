@@ -8,6 +8,11 @@ declare type StackScreen = {
   [Routes.EDIT_ARTIGO]: IEditArtigoDto;
   [Routes.USER_ADMIN]: undefined;
   [Routes.USER_LIST]: undefined;
-  [Routes.POST_USER]: undefined;
+  [Routes.EDIT_USER]: IEditUsuario;
+  [Routes.POST_USER]: undefined; 
+  [Routes.ACCOUNTING]: undefined;
+  [Routes.SALE]: undefined;
+  [Routes.BOX_SALE]: undefined;
+  [Routes.SALE_ARTICLES]: undefined;
   // [Routes.EDIT_ARTIGO]: IEditArtigoDto;
 };

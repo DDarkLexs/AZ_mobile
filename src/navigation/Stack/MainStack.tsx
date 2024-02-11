@@ -1,15 +1,17 @@
 import {DrawerHeaderProps} from '@react-navigation/drawer';
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import Header from '../../components/header/header';
 import {DrawerContent} from '../../components/navigation/DrawerContent';
 import {Routes} from '../../constants/Enum';
 import {useAuth} from '../../hooks/useAuth';
 import {createDrawerNavigator, useTheme} from '../../modules/index';
-import HomeScreen from '../../screens/Home.screen';
 import InvantarioStack from '../../screens/Inventario/Index';
 import UsuarioAdminStack from '../../screens/UsuarioAdmin/Index';
-import ReactNativeBiometrics from 'react-native-biometrics';
-import { useAppDispatch } from '../../hooks/redux';
+
+import {useAppDispatch} from '../../hooks/redux';
+import ContabilidadeScreen from '../../screens/Contabilide/Index';
+import HomeScreen from '../../screens/Home/Home.screen';
+import GestaoComercialStack from '../../screens/Venda/Index';
 
 const Drawer = createDrawerNavigator<StackScreen>();
 
@@ -29,11 +31,11 @@ const MainStack: React.FC = (): React.JSX.Element => {
       console.log('Falha na autenticação biométrica');
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     if (token) {
       handleBiometricLogin();
     }
-  },[token])
+  }, [token]);
 
   return (
     <Drawer.Navigator
@@ -64,6 +66,13 @@ const MainStack: React.FC = (): React.JSX.Element => {
           options={{
             headerShown: false,
           }}
+          name={Routes.SALE}
+          component={GestaoComercialStack}
+        />
+        <Drawer.Screen
+          options={{
+            headerShown: false,
+          }}
           name={Routes.INVENTARIO}
           component={InvantarioStack}
         />
@@ -73,6 +82,13 @@ const MainStack: React.FC = (): React.JSX.Element => {
           }}
           name={Routes.USER_ADMIN}
           component={UsuarioAdminStack}
+        />
+        <Drawer.Screen
+          options={{
+            headerShown: false,
+          }}
+          name={Routes.ACCOUNTING}
+          component={ContabilidadeScreen}
         />
       </Drawer.Group>
     </Drawer.Navigator>

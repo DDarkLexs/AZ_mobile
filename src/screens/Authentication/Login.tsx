@@ -113,7 +113,7 @@ const LoginScreen: React.FC = () => {
           onPress={() => dispatch(setAuthBiometric(!authBiometrico))}
         />
         <Text disabled={loading} style={styles.checkboxLabel}>
-          autenticar com biométrico!
+          autenticar com biométrico
         </Text>
       </View>
 

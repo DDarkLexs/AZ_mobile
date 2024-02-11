@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {
@@ -72,15 +73,20 @@ const CustomCardArtigo: React.FC<CustomCardProps> = ({
               </Surface>
               {/* Título do artigo */}
               <View style={{flex: 1}}>
-                <Text style={{...Font.bold, fontWeight: 'bold'}}>
+                <Text
+                  style={{
+                    ...Font.bold,
+                    fontWeight: 'bold',
+                    color: theme.colors.onBackground,
+                  }}>
                   {item.nome}
                 </Text>
-                <Text>
+                <Text style={{color: theme.colors.onBackground}}>
                   {categorias.find(
                     state => state.categoriaId === item.categoriaId,
                   )?.nome || ''}
                 </Text>
-                <Text>
+                <Text style={{color: theme.colors.onBackground}}>
                   {item?.validade
                     ? new Date(item?.validade || new Date()).toLocaleDateString(
                         'pt',
@@ -90,8 +96,30 @@ const CustomCardArtigo: React.FC<CustomCardProps> = ({
               </View>
               {/* Unidade e preço */}
               <View>
-                <Text style={{textAlign: 'right'}}>{item.unidade} unidade</Text>
-                <Text style={{fontWeight: 'bold', textAlign: 'right'}}>
+                <Text
+                  style={{
+                    textAlign: 'right',
+                    color: theme.colors.onBackground,
+                  }}>
+                  <Icon
+                    size={15}
+                    color={theme.colors.secondary}
+                    source={'package'}
+                  />
+                  {item.unidade} unidade
+                </Text>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    textAlign: 'right',
+                    marginTop: 10,
+                    color: theme.colors.onBackground,
+                  }}>
+                  <Icon
+                    size={15}
+                    color={theme.colors.primary}
+                    source={'cash-100'}
+                  />
                   {convertToCurrency(Number(item.preco))}
                 </Text>
               </View>

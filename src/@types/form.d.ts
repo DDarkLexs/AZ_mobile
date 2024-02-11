@@ -8,3 +8,10 @@ interface IResponseError {
   error: string;
   statusCode: number;
 }
+
+
+interface ICreateVendaForm {
+  Cliente: ClienteDto;
+  NotaVenda: NotaVendaDto;
+  Items: CartItem[];
+}

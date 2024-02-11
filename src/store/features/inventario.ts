@@ -1,5 +1,4 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-
+import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 
 const initialState: InventarioState = {
   categorias: [],
@@ -13,6 +12,10 @@ const invatarioSlice = createSlice({
     setCategorias: (state, action: PayloadAction<ICategoria[]>) => {
       state.categorias = action.payload;
     },
+    clearInventario: (state, action: PayloadAction<void>) => {
+      state.artigos = [];
+      state.categorias = [];
+    },
     setArtigos: (state, action: PayloadAction<IArtigo[]>) => {
       state.artigos = action.payload;
     },
@@ -22,6 +25,6 @@ const invatarioSlice = createSlice({
   },
 });
 
-export const {setCategorias, setArtigos, pushArtigo} = invatarioSlice.actions;
+export const {setCategorias, setArtigos, pushArtigo, clearInventario} = invatarioSlice.actions;
 
 export default invatarioSlice.reducer;

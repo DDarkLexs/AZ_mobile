@@ -9,7 +9,7 @@ import {
   TextInput,
   useTheme,
 } from 'react-native-paper';
-import CustomCardArtigo from '../../components/card/ArtigoCard';
+import ArtigoCard from '../../components/card/ArtigoCart';
 import CategoryCrudDialog from '../../components/dialog/Categoria';
 import {Routes} from '../../constants/Enum';
 import Font from '../../constants/Font';
@@ -20,10 +20,12 @@ import {
   useGetArtigosQuery,
   useGetCategoriasQuery,
 } from '../../store/api/inventario';
+import {setCart} from '../../store/features/gestaoComercial';
 import {setArtigos, setCategorias} from '../../store/features/inventario';
+import {convertToCurrency} from '../../utils/functions';
 
-const ArtigoScreen: React.FC<
-  NativeStackScreenProps<StackScreen, Routes.ARTIGO>
+const SaleArtigoScreen: React.FC<
+  NativeStackScreenProps<StackScreen, Routes.SALE_ARTICLES>
 > = ({navigation, route}): React.JSX.Element => {
   const theme = useTheme();
   const [fabOpen, setFabOpen] = useState<boolean>(false);
@@ -34,8 +36,38 @@ const ArtigoScreen: React.FC<
   const {artigos, categorias} = useAppSelector(state => state.inventario);
   const query = useGetArtigosQuery();
   const Cquery = useGetCategoriasQuery();
-  const {showErrorToast} = useAppToast();
+  const {showErrorToast, showPrimaryToast} = useAppToast();
   const {routePath} = useAppSelector(state => state.app);
+  const {cart} = useAppSelector(state => state.gestaoComercial);
+  const [cartItem, setCartItem] = useState<CartItem[]>(cart);
+  // const total = cart.reduce()
+  const total: number = cart.reduce(
+    (acumulador, current) =>
+      acumulador + (current.preco * current.quantidade - current.desconto),
+    0,
+  );
+  // const {showErrorToast} = useAppToast();
+  const addItem = (item: CartItem): void => {
+    if (item.quantidade >= 1) {
+      // showPrimaryToast({
+      //   text1: `${item.nome} foi inserido`,
+      //   text2:`Total: ${}`
+      // });
+      dispatch(setCart([...cart, item]));
+    } else {
+      showErrorToast({
+        text1: 'Valor inválido',
+        text2: 'Não é permitido inserir valor menor que 1',
+      });
+    }
+  };
+  const removeItem = (item: any): void => {};
+
+  useEffect(() => {
+    if (routePath === route.name) {
+      query.refetch();
+    }
+  }, [routePath]);
   useEffect(() => {
     if (routePath === route.name) {
       query.refetch();
@@ -81,8 +113,9 @@ const ArtigoScreen: React.FC<
     <>
       <View style={Layout.screenLayout}>
         {/* Input e botão com ícone de ajuste */}
+        {/* <Text>{JSON.stringify(cart)}</Text> */}
         <View style={Layout.screenHeader}>
-          <Text style={{...Font.extraBold}}>{'Inventário'}</Text>
+          <Text style={{...Font.extraBold}}>{'Artigos'}</Text>
         </View>
         <View
           style={{
@@ -144,13 +177,14 @@ const ArtigoScreen: React.FC<
           scrollEnabled={true}
           keyExtractor={(item, i) => i.toString()}
           renderItem={({item}) => (
-            <CustomCardArtigo
-              onDeletePress={() => {}}
-              onEditPress={editItem}
-              onViewPress={() => {}}
-              loading={query.isLoading}
-              item={item}
-            />
+            <ArtigoCard addItem={addItem} item={item} />
+            // <CustomCardArtigo
+            //   onDeletePress={() => {}}
+            //   onEditPress={editItem}
+            //   onViewPress={() => {}}
+            //   loading={query.isLoading}
+            //   item={item}
+            // />
           )}
         />
       </View>
@@ -162,23 +196,21 @@ const ArtigoScreen: React.FC<
       {/* FAB com ícone de store font plus */}
       <FAB.Group
         open={fabOpen}
+        label={`${convertToCurrency(total)}`}
         onPress={() => setFabOpen(state => !state)}
         visible={true}
-        fabStyle={{borderRadius: 50, left: 0}}
-        icon={fabOpen ? 'close' : 'storefront'}
+        fabStyle={{borderRadius: 50, right: 0}}
+        icon={fabOpen ? 'close' : 'cart'}
         actions={[
           {
-            icon: 'shape-square-rounded-plus',
-            label: 'criar artigo',
+            icon: 'cash-register',
+            label: 'voltar para Caixa',
             onPress: () => {
               setFabOpen(state => !state);
-              navigation.navigate(Routes.POST_ARTIGO);
+              if (navigation.canGoBack()) {
+                navigation.goBack();
+              }
             },
-          },
-          {
-            icon: 'view-list',
-            label: 'categorias',
-            onPress: handleOpenDialog,
           },
         ]}
         onStateChange={({open}) => console.log('FAB aberto:', open)}
@@ -198,6 +230,41 @@ const styles = StyleSheet.create({
   header: {
     marginBottom: 8,
   },
+  cardContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderRadius: 8,
+    elevation: 4,
+  },
+
+  leftContainer: {
+    flex: 1,
+  },
+
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+
+  category: {
+    fontSize: 14,
+    color: 'gray',
+  },
+
+  rightContainer: {
+    alignItems: 'flex-end',
+  },
+
+  priceLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
 });
 
-export default ArtigoScreen;
+export default SaleArtigoScreen;

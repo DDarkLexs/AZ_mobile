@@ -112,3 +112,34 @@ interface IEditUsuario {
   Funcionario: IFuncionario;
 }
 
+interface ItemVenda {
+  itemVendaId: number;
+  nome: string;
+  quantidade: number;
+  preco: number;
+  desconto: number;
+  notaVendaId: number;
+  artigoId: number;
+  created: Date;
+  updated: Date;
+}
+
+
+interface NotaVendaDto {
+  clienteId?: number;
+  entidadeId?: number;
+  usuarioId?: number;
+  data?: Date;
+  metodoPagamento: string;
+  valorPago: number;
+}
+
+interface ClienteDto {
+  bi?: string;
+  contacto?: string;
+  nif?: string;
+  nome?: string;
+}
+
+interface ItemVendaDto
+  extends Omit<ItemVenda, 'itemVendaId' | 'created' | 'updated'> {}

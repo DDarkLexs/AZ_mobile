@@ -60,7 +60,28 @@ export const usuarioApiSlice = createApi({
         return error;
       },
     }),
+    updateUserCollection: builder.mutation<IEditUsuario, IEditUsuario>({
+      query: bodyData => ({
+        url: 'auth/usuario/collection',
+        method: 'PUT',
+        body: bodyData,
+      }),
+      transformResponse: (response: IEditUsuario) => response,
+      transformErrorResponse: (
+        error: any,
+        meta: FetchBaseQueryMeta | undefined,
+        arg: IEditUsuario,
+      ) => {
+        if (meta?.response) {
+          const msg = Array.isArray(Object(error.data.message))
+            ? String(error.data.message[0])
+            : String(error.data.message);
+          return msg;
+        }
+        return error;
+      },
+    }),
   }),
 });
 
-export const {useGetAllUsuarioQuery, usePostNewUserMutation} = usuarioApiSlice;
+export const {useGetAllUsuarioQuery, usePostNewUserMutation, useUpdateUserCollectionMutation} = usuarioApiSlice;

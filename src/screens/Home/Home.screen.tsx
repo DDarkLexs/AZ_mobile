@@ -2,10 +2,11 @@ import {DrawerScreenProps} from '@react-navigation/drawer';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, Subheading, Text, useTheme} from 'react-native-paper';
-import {Routes} from '../constants/Enum';
-import Font from '../constants/Font';
-import Layout from '../constants/Layout';
-import {useAuth} from '../hooks/useAuth';
+import {Routes} from '../../constants/Enum';
+import Font from '../../constants/Font';
+import Layout from '../../constants/Layout';
+import {useAuth} from '../../hooks/useAuth';
+
 interface OperationProp {
   icon: string;
   label: string;
@@ -34,33 +35,33 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
     nome: usuario?.nome,
     operacao: 'Operação',
     coluna1: {
-      icon: 'box',
+      icon: 'account',
       label1: 'Venda',
     },
     coluna2: {
-      icon: 'box',
+      icon: 'cart',
       label2: 'Cliente',
     },
   };
 
   const operation1: OperationProp[] = [
     {
-      icon: 'box',
+      icon: 'cart',
       label: 'venda',
     },
     {
-      icon: 'box',
-      label: 'Abertura',
+      icon: 'account-plus',
+      label: 'Cliente',
     },
   ];
   const operation2: OperationProp[] = [
     {
-      icon: 'box',
-      label: 'venda',
+      icon: 'circle-multiple',
+      label: 'saldo',
     },
     {
-      icon: 'box',
-      label: 'Abertura',
+      icon: 'note',
+      label: 'Receita',
     },
   ];
 
@@ -95,7 +96,6 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
     colunaHeader: {},
     colunaContent: {},
   });
-  
 
   return (
     <View style={Layout.screenLayout}>
@@ -120,6 +120,8 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
             <View style={styles.colunaHeader}>
               <Icon size={30} source={icon} />
               <Text>{label}</Text>
+              <Text style={{...Font.bold, marginTop: 4}}>100</Text>
+
             </View>
           </View>
         ))}
@@ -135,6 +137,7 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
             <View style={styles.colunaHeader}>
               <Icon size={30} source={icon} />
               <Text>{label}</Text>
+              <Text style={{...Font.bold, marginTop: 4}}>100</Text>
             </View>
           </View>
         ))}
@@ -142,6 +145,5 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
     </View>
   );
 };
-
 
 export default HomeScreen;

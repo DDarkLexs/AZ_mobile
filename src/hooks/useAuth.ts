@@ -1,11 +1,14 @@
 import {useMemo} from 'react';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import {logout} from '../store/features/auth';
+import {clearInventario} from '../store/features/inventario';
 import {useAppDispatch, useAppSelector} from './redux';
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();
   const logOutAccount = async () => {
+    dispatch(clearInventario());
+    dispatch(clearInventario());
     dispatch(logout());
   };
   const {token, usuario, authBiometrico} = useAppSelector(state => state.auth);
@@ -43,6 +46,6 @@ export const useAuth = () => {
 
   return useMemo(
     () => ({usuario, token, logOutAccount, biometricAuthentication}),
-    [usuario, token, logOutAccount, biometricAuthentication],
+    [usuario, token],
   );
 };

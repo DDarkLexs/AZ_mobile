@@ -28,3 +28,23 @@ export const calcularIdade = (dataNascimento: Date): number => {
 
   return idade;
 };
+
+export const removerObjetoPorId = (
+  id: number,
+  array: any[],
+  keyName: string,
+): any[] => {
+  // Encontrar o índice do objeto com base no ID
+  const index = array.findIndex(state => state[keyName] === id);
+
+  // Verificar se o objeto com o ID fornecido foi encontrado
+  if (index !== -1) {
+    // Remover o objeto do array
+    array.splice(index, 1);
+    console.log('Objeto removido com sucesso!');
+  } else {
+    console.log('Objeto com o ID fornecido não encontrado.');
+  }
+
+  return array;
+};
