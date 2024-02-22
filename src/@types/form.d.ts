@@ -9,9 +9,13 @@ interface IResponseError {
   statusCode: number;
 }
 
-
 interface ICreateVendaForm {
   Cliente: ClienteDto;
   NotaVenda: NotaVendaDto;
   Items: CartItem[];
+}
+
+interface IUpdateEntidadeMapForm {
+  entidade: Omit<Required<IEntidade>, 'updated' | 'entidadeId' | 'created'>;
+  eEndereco: Omit<Required<IEEndereco>, 'updated' | 'eEnderecoId' | 'created'>;
 }

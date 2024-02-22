@@ -1,11 +1,14 @@
 import {DrawerScreenProps} from '@react-navigation/drawer';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, Subheading, Text, useTheme} from 'react-native-paper';
 import {Routes} from '../../constants/Enum';
 import Font from '../../constants/Font';
 import Layout from '../../constants/Layout';
 import {useAuth} from '../../hooks/useAuth';
+import {useGetEntidadeMapQuery} from '../../store/api/entidade';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { setEndereco, setEntidade } from '../../store/features/entidade';
 
 interface OperationProp {
   icon: string;
@@ -18,6 +21,18 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
 }) => {
   const theme = useTheme();
   const {usuario} = useAuth();
+  const entidadeMapApi = useGetEntidadeMapQuery();
+  const dispatch = useAppDispatch();
+  const entidadeMap = useAppSelector(state => state.entidade);
+
+  useEffect(() => {
+    if (entidadeMapApi.isSuccess) {
+      const {eEndereco, entidade} = entidadeMapApi.data;
+      dispatch(setEntidade(entidade));
+      dispatch(setEndereco(eEndereco));
+    }
+  }, [entidadeMapApi.fulfilledTimeStamp]);
+
   function saudacaoPorPeriodoDoDia(data: Date): string {
     const hora = data.getHours();
 
@@ -121,7 +136,6 @@ const HomeScreen: React.FC<DrawerScreenProps<StackScreen, Routes.HOME>> = ({
               <Icon size={30} source={icon} />
               <Text>{label}</Text>
               <Text style={{...Font.bold, marginTop: 4}}>100</Text>
-
             </View>
           </View>
         ))}

@@ -15,6 +15,11 @@ interface InventarioState {
   artigos: IArtigo[];
 }
 
+interface IEntidadeState {
+  entidade: IEntidade | null;
+  eEndereco: IEEndereco | null;
+}
+
 type CartItem = Omit<
   ItemVenda,
   'itemVendaId' | 'notaVendaId' | 'updated' | 'created'
@@ -22,4 +27,10 @@ type CartItem = Omit<
 
 interface GestaoComercialState {
   cart: CartItem[];
+}
+
+
+interface IEntidadeMap {
+  entidade: IEntidade;
+  eEndereco: IEEndereco;
 }

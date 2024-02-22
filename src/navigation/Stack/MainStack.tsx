@@ -12,6 +12,7 @@ import {useAppDispatch} from '../../hooks/redux';
 import ContabilidadeScreen from '../../screens/Contabilide/Index';
 import HomeScreen from '../../screens/Home/Home.screen';
 import GestaoComercialStack from '../../screens/Venda/Index';
+import ConfigurationScreen from '../../screens/Configuration';
 
 const Drawer = createDrawerNavigator<StackScreen>();
 
@@ -89,6 +90,13 @@ const MainStack: React.FC = (): React.JSX.Element => {
           }}
           name={Routes.ACCOUNTING}
           component={ContabilidadeScreen}
+        />
+        <Drawer.Screen
+          options={{
+            headerShown: false,
+          }}
+          name={Routes.CONFIGURATION}
+          component={ConfigurationScreen}
         />
       </Drawer.Group>
     </Drawer.Navigator>

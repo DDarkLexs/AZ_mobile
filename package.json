@@ -15,8 +15,7 @@
     "build-apk": "cd android && gradlew assembleRelease --stacktrace",
     "android-ts": "yarn  \"check-types:watch\"  \"android\"",
     "check-types": "tsc",
-    "watch": "tsc --watch",
-    "ionic:serve": "npm run start"
+    "watch": "tsc --watch"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.21.0",

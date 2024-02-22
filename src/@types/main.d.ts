@@ -124,7 +124,6 @@ interface ItemVenda {
   updated: Date;
 }
 
-
 interface NotaVendaDto {
   clienteId?: number;
   entidadeId?: number;
@@ -143,3 +142,46 @@ interface ClienteDto {
 
 interface ItemVendaDto
   extends Omit<ItemVenda, 'itemVendaId' | 'created' | 'updated'> {}
+
+interface IEntidade {
+  entidadeId: number;
+  nome: string;
+  nif: string;
+  email: string;
+  contacto: string;
+  created: Date;
+  updated: Date;
+}
+
+interface IEEndereco {
+  eEnderecoId: number;
+  localidade: string;
+  morada: string;
+  codigoPostal: string;
+  created: Date;
+  updated: Date;
+  entidadeId: number;
+}
+
+interface IEntidadeMap {
+  entidade: IEntidade;
+  eEndereco: IEEndereco;
+}
+
+interface ITaxa {
+  TaxaId: number;
+  nome: string;
+  valor: number;
+  created: Date;
+  updated: Date;
+  eConfigId: number;
+}
+
+interface IEconfig {
+  EconfigId: number;
+  moeda: string;
+  created: Date;
+  updated: Date;
+  Taxa: ITaxa[];
+  entidadeId: number;
+}

@@ -36,4 +36,9 @@ export const navDrawerItem: TNavDrawerItem = {
     label: 'Contabilidade',
     adminRequired: true,
   },
+  [String(Routes.CONFIGURATION)]: {
+    icon: 'cog',
+    label: 'Configuração',
+    adminRequired: true,
+  },
 };

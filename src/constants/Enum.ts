@@ -15,6 +15,7 @@ export enum Routes {
   SALE = 'VENDA',
   BOX_SALE = 'CAIXA',
   SALE_ARTICLES = 'LISTA_ARTIGOS_VENDA',
+  CONFIGURATION = 'CONFIGURACOES',
   // USERS = 'USUARIOS',
 }
 export enum Cargo {

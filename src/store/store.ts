@@ -7,23 +7,27 @@ import {
   persistReducer,
   persistStore,
 } from '../modules/index';
-import { authApiSlice } from './api/auth';
-import { gestaoComercialApiSlice } from './api/gestaoComercial';
-import { inventarioApiSlice } from './api/inventario';
-import { usuarioApiSlice } from './api/usuario';
+import {authApiSlice} from './api/auth';
+import {entidadeApiSlice} from './api/entidade';
+import {gestaoComercialApiSlice} from './api/gestaoComercial';
+import {inventarioApiSlice} from './api/inventario';
+import {usuarioApiSlice} from './api/usuario';
 import appSlice from './features/app';
 import authSlice from './features/auth';
 import gestaoComercial from './features/gestaoComercial';
 import inventaarioSlice from './features/inventario';
 import usuarioSlice from './features/usuario';
+import entidadeSlice from './features/entidade';
 const rootReducer = combineReducers({
   app: appSlice,
   auth: authSlice,
+  entidade: entidadeSlice,
   inventario: inventaarioSlice,
   usuario: usuarioSlice,
   gestaoComercial: gestaoComercial,
   //   socket: socketReducer,
   [authApiSlice.reducerPath]: authApiSlice.reducer,
+  [entidadeApiSlice.reducerPath]: entidadeApiSlice.reducer,
   [inventarioApiSlice.reducerPath]: inventarioApiSlice.reducer,
   [usuarioApiSlice.reducerPath]: usuarioApiSlice.reducer,
   [gestaoComercialApiSlice.reducerPath]: gestaoComercialApiSlice.reducer,
@@ -32,7 +36,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: '@AZ',
   storage: AsyncStorage,
-  whitelist: ['auth', 'inventario', 'usuario', 'gestaoComercial'], // Os reducers que você quer persistir
+  whitelist: ['auth', 'inventario', 'usuario', 'gestaoComercial', 'entidade'], // Os reducers que você quer persistir
 };
 
 const persistedReducer = persistReducer({...persistConfig}, rootReducer);
@@ -45,9 +49,10 @@ export const store = configureStore({
       serializableCheck: false,
     }).concat(
       authApiSlice.middleware,
+      entidadeApiSlice.middleware,
       inventarioApiSlice.middleware,
       usuarioApiSlice.middleware,
-      gestaoComercialApiSlice.middleware
+      gestaoComercialApiSlice.middleware,
     ),
 });
 

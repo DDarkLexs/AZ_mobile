@@ -14,5 +14,6 @@ declare type StackScreen = {
   [Routes.SALE]: undefined;
   [Routes.BOX_SALE]: undefined;
   [Routes.SALE_ARTICLES]: undefined;
+  [Routes.CONFIGURATION]: undefined;
   // [Routes.EDIT_ARTIGO]: IEditArtigoDto;
 };
