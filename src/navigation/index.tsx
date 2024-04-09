@@ -13,9 +13,6 @@ const AppNavigator: React.FC<any> = (): React.JSX.Element => {
   const isDark = useColorScheme() == 'dark';
   const navigationTheme = theme.dark ? DarkTheme : DefaultTheme;
   const dispatch = useAppDispatch();
-  
-
-
 
   return (
     <>
