@@ -185,3 +185,36 @@ interface IEconfig {
   Taxa: ITaxa[];
   entidadeId: number;
 }
+
+
+interface IEConfig {
+  EconfigId: number;
+  moeda: string;
+  ivaAtivo: boolean;
+  regimeIva: strig;
+  taxaIva: number;
+  created: string;
+  updated: string;
+  entidadeId: number;
+}
+
+interface IEConfigPlus {
+  EconfigId: number;
+  moeda: string;
+  ivaAtivo: boolean;
+  regimeIva: strig;
+  taxaIva: number;
+  created: string;
+  updated: string;
+  entidadeId: number;
+  Taxa: Taxa[];
+}
+
+interface ITaxa {
+  TaxaId: number;
+  nome: string;
+  valor: number;
+  created: string;
+  updated: string;
+  eConfigId: number;
+}

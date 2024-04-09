@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {
   FAB,
@@ -41,10 +41,14 @@ const SaleArtigoScreen: React.FC<
   const {cart} = useAppSelector(state => state.gestaoComercial);
   const [cartItem, setCartItem] = useState<CartItem[]>(cart);
   // const total = cart.reduce()
-  const total: number = cart.reduce(
-    (acumulador, current) =>
-      acumulador + (current.preco * current.quantidade - current.desconto),
-    0,
+  const total: number = useMemo(
+    () =>
+      cart.reduce(
+        (acumulador, current) =>
+          acumulador + (current.preco * current.quantidade - current.desconto),
+        0,
+      ),
+    [cart],
   );
   // const {showErrorToast} = useAppToast();
   const addItem = (item: CartItem): void => {

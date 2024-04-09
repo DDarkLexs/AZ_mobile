@@ -82,6 +82,54 @@ export const entidadeApiSlice = createApi({
         return error;
       },
     }),
+    getEntidadeConfig: builder.query<IEConfigPlus, void>({
+      query: () => ({
+        url: '/entidade/config',
+        method: 'GET',
+        // body: bodyData,
+      }),
+      transformResponse: (response: IEConfigPlus) => response,
+      transformErrorResponse: (
+        error: any,
+        meta: FetchBaseQueryMeta | undefined,
+        arg: any,
+      ) => {
+        if (meta?.response) {
+          const msg = Array.isArray(Object(error.data.message))
+            ? String(error.data.message[0])
+            : String(error.data.message);
+          return msg;
+        }
+        return error;
+      },
+    }),
+    updateEntidadeConfig: builder.mutation<
+      IEConfig,
+      {
+        data: IEConfigDto;
+        eConfigId: number;
+      }
+    >({
+      query: ({eConfigId, data}) => ({
+        url: `/entidade/config/${eConfigId}`,
+        method: 'PUT',
+        body: data,
+      }),
+      transformResponse: (response: IEConfig) => response,
+      transformErrorResponse: (
+        error: any,
+        meta: FetchBaseQueryMeta | undefined,
+        arg: any,
+      ) => {
+        if (meta?.response) {
+          const msg = Array.isArray(Object(error.data.message))
+            ? String(error.data.message[0])
+            : String(error.data.message);
+          return msg;
+        }
+        return error;
+      },
+    }),
   }),
 });
 
@@ -89,4 +137,6 @@ export const {
   useUpdateEntidadeMapMutation,
   useGetEntidadeMapQuery,
   use$getEntidadeMapMutation,
+  useGetEntidadeConfigQuery,
+  useUpdateEntidadeConfigMutation
 } = entidadeApiSlice;

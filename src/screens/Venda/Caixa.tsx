@@ -403,8 +403,8 @@ const CaixaScreen: React.FC<
             },
           },
           {
-            icon: 'autorenew',
-            label: 'Novo checkout',
+            icon: 'file-plus',
+            label: 'Novo facturação',
             onPress: () => setFabOpen(state => !state),
           },
         ]}

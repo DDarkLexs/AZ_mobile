@@ -22,8 +22,8 @@ export const navDrawerItem: TNavDrawerItem = {
     adminRequired: true,
   },
   [String(Routes.SALE)]: {
-    icon: 'cart',
-    label: 'Checkout',
+    icon: 'file-document',
+    label: 'Facturação',
     adminRequired: false,
   },
   [String(Routes.USER_ADMIN)]: {

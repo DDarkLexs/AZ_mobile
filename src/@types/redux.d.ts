@@ -18,6 +18,7 @@ interface InventarioState {
 interface IEntidadeState {
   entidade: IEntidade | null;
   eEndereco: IEEndereco | null;
+  eConfig: IEConfigPlus | null
 }
 
 type CartItem = Omit<

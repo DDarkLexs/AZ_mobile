@@ -5,13 +5,12 @@ import Layout from '../../constants/Layout';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import {useAppToast} from '../../hooks/useToast';
 import {useUpdateEntidadeMapMutation} from '../../store/api/entidade';
-import { setEntidadeMap } from '../../store/features/entidade';
+import {setEntidadeMap} from '../../store/features/entidade';
 
 const EmpresaConfigScreen = () => {
   const theme = useTheme();
   const entidadeState = useAppSelector(state => state.entidade);
   const [entidade, setEntidade] = useState({...entidadeState.entidade});
-
   const [endereco, setEndereco] = useState({...entidadeState.eEndereco});
   const [save, entityState] = useUpdateEntidadeMapMutation();
   const {showErrorToast, showPrimaryToast} = useAppToast();
@@ -35,16 +34,14 @@ const EmpresaConfigScreen = () => {
       });
     }
   }, [entityState.isError]);
-  
+
   useEffect(() => {
     if (entityState.isSuccess) {
-      
       showPrimaryToast({
         text1: 'Empresa atualizado com sucesso!',
         text2: 'dados interno atualizado!',
       });
       dispatch(setEntidadeMap(entityState.data));
-
     }
   }, [entityState.fulfilledTimeStamp]);
 
